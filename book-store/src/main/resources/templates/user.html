@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Page</title>
+    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="js/user.js"></script>
+</head>
+<body>
+
+<a th:href="@{/logout}">Logout</a>
+
+<hr/>
+
+<form>
+    Title:
+    <select name="book" id="saleTitle">
+        <option th:each="book : ${books}" th:value="${book.title}" th:text="${book.title}"></option>
+    </select>
+    Author:
+    <select name="author" id="saleAuthor">
+        <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+    </select>
+    Quantity: <input type="text" id="saleQuantity"/>
+    <button id = "sellBook">Sell Book</button>
+</form>
+
+<form>
+    Total sum: <output type="text" id ="totalSum"/>
+</form>
+
+<hr/>
+
+<form>
+    Title: <input type = "text" id = "title"/>
+    Genre: <input type = "text" id = "genre"/>
+    Author: <input type = "text" id = "author"/>
+    <button id = "search">Search</button>
+</form>
+
+</body>
+</html>
