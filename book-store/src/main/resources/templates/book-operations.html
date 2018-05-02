@@ -59,11 +59,7 @@
     <form>
         Title:
         <select name="book" id="bookTitle">
-            <option th:each="book : ${books}" th:value="${book.title}" th:text="${book.title}"></option>
-        </select>
-        Author:
-        <select name="author" id="bookAuthor">
-            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+            <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
         </select>
         <button id = "deleteBook">Delete</button>
     </form>
@@ -97,6 +93,17 @@
 
     <form>
         <button id = "generatePdfReport">Generate PDF Report</button>
+    </form>
+
+    <form>
+        <input type = "text" id = "searchBy"/>
+        <button id = "googleSearch">Google Search</button>
+    </form>
+
+    <hr/>
+
+    <form>
+        <output type = "text" id = "error"></output>
     </form>
 
 </body>

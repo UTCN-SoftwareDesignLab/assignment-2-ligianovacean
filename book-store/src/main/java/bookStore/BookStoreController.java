@@ -1,20 +1,11 @@
 package bookStore;
 
-import bookStore.dto.AuthorDTO;
-import bookStore.dto.BookDto;
-import bookStore.service.AuthorService;
-import bookStore.service.BookService;
+import bookStore.service.author.AuthorService;
+import bookStore.service.book.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.validation.Valid;
 
 @Controller
 public class BookStoreController {
@@ -33,13 +24,13 @@ public class BookStoreController {
     String adminBookPage(Model model) {
         model.addAttribute("authors", authorService.getAll());
         model.addAttribute("books", bookService.getAll());
-        return "book-form";
+        return "book-operations";
     }
 
     @RequestMapping("/admin-user")
     String adminUserPage(Model model) {
         model.addAttribute("authors", authorService.getAll());
-        return "user-form";
+        return "user-operations";
     }
 
     @RequestMapping("user")

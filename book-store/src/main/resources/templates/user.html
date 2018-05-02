@@ -5,8 +5,41 @@
     <title>User Page</title>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
     <script src="js/user.js"></script>
+
+    <style>
+        td {
+            width: 200px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        table, th, td {
+            border-collapse: collapse;
+            border: 1px solid black;
+        }
+    </style>
+
 </head>
 <body>
+
+
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Genre</th>
+        <th>Price</th>
+        <th>Quantity</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
+
 
 <a th:href="@{/logout}">Logout</a>
 
@@ -23,9 +56,7 @@
     </select>
     Quantity: <input type="text" id="saleQuantity"/>
     <button id = "sellBook">Sell Book</button>
-</form>
-
-<form>
+    <p/>
     Total sum: <output type="text" id ="totalSum"/>
 </form>
 
@@ -33,9 +64,27 @@
 
 <form>
     Title: <input type = "text" id = "title"/>
+    <button id = "titleSearch">Search by Title</button>
+</form>
+
+<hr/>
+
+<form>
     Genre: <input type = "text" id = "genre"/>
-    Author: <input type = "text" id = "author"/>
-    <button id = "search">Search</button>
+    <button id = "genreSearch">Search by Genre</button>
+</form>
+
+<hr/>
+
+<form>
+    Author: <input type = "text" id = "auth"/>
+    <button id = "authorSearch">Search by Author</button>
+</form>
+
+<hr/>
+
+<form>
+    <output type = "text" id = "error"></output>
 </form>
 
 </body>

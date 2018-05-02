@@ -30,21 +30,22 @@ function addBook(book) {
         type: 'POST',
         data: JSON.stringify(book),
         dataType: 'json',
-        success: function() {
+        success: function(result) {
+            $('#error').val(result.message);
             refreshBooks();
             $('#title, #genre, #price, #quantity').val('');
         }
     });
 }
 
-function deleteBook(title, authorName) {
+function deleteBook(id) {
      $.ajax('/deleteBooks', {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             type: 'POST',
-            data: JSON.stringify(title, authorName),
+            data: JSON.stringify(id),
             dataType: 'json',
             success: function() {
                 refreshBooks();
@@ -63,7 +64,8 @@ function updateBook(book) {
             type: 'POST',
             data: JSON.stringify(book),
             dataType: 'json',
-            success: function() {
+            success: function(result) {
+                $('#error').val(result.message);
                 refreshBooks();
                 $('#title, #genre, #price, #quantity').val('');
             }
@@ -80,7 +82,8 @@ function generateCSVReport(report) {
         type: 'POST',
         data: JSON.stringify(report),
         dataType: 'json',
-        success: function() {
+        success: function(result) {
+            $('#error').val(result.message);
             refreshBooks();
         }
     });
@@ -95,10 +98,19 @@ function generatePDFReport(report) {
         type: 'POST',
         data: JSON.stringify(report),
         dataType: 'json',
-        success: function() {
+        success: function(result) {
+            $('#error').val(result.message);
             refreshBooks();
         }
     });
+}
+
+function googleSearch(searchBy) {
+    $.get('/googleSearch', {searchBy:searchBy}, function(result) {
+            $('#error').val(result.message);
+            displayBooks(result);
+            $('#searchBy').val('');
+        });
 }
 
 
@@ -116,10 +128,9 @@ $(function() {
             });
         };
         if (this.id == "deleteBook") {
-            deleteBook({
-                'title':    $('#bookTitle').val(),
-                'authorName':   $('#bookAuthor').val()
-            })
+            deleteBook(
+                $('#bookTitle').val()
+            )
         };
         if (this.id == "updateBook") {
             updateBook({
@@ -134,6 +145,9 @@ $(function() {
         };
         if (this.id == "generatePdfReport") {
             generatePDFReport("PDF");
+        };
+        if (this.id == "googleSearch") {
+            googleSearch($('#searchBy').val());
         };
         return false;
     });

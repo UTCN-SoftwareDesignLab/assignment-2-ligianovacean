@@ -1,16 +1,20 @@
-package bookStore.service;
+package bookStore.service.book;
 
 import bookStore.dto.BookDto;
 import bookStore.entity.Book;
 
-import javax.validation.Valid;
 import java.util.List;
 
 public interface BookService {
+    Book findById(Integer id);
+
     List<Book> getAll();
+    List<Book> getByTitle(String title);
+    List<Book> getByAuthor(String author);
+    List<Book> getByGenre(String genre);
     Book create(BookDto book);
-    void delete(String title, Integer authorId);
-    void update(BookDto book);
+    void delete(Integer id);
+    Book update(BookDto book);
     Book get(String title, Integer authorId);
     List<Book> getOutOfStock();
 }

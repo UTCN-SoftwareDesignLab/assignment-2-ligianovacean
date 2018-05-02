@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Table(name = "books")
 public class Book {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String genre;
     private String title;
@@ -15,7 +15,7 @@ public class Book {
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Author author;
 
     public Book(String genre, String title, int price, int quantity, Author author) {
@@ -78,6 +78,6 @@ public class Book {
 
     @Override
     public String toString() {
-        return id + "," + title + "," + author.getName() + "," + genre + "," + price + "," + quantity;
+        return id + ";" + title + ";" + author.getName() + ";" + genre + ";" + price + ";" + quantity;
     }
 }

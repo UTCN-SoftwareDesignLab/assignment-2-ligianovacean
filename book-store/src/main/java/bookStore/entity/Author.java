@@ -2,14 +2,15 @@ package bookStore.entity;
 
 import javax.persistence.*;
 import java.util.List;
-
+import java.util.Set;
 
 @Entity
 @Table(name = "authors")
 public class Author {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+
     private String name;
 
     private Author() {}

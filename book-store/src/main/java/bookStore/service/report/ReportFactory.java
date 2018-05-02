@@ -1,10 +1,10 @@
 package bookStore.service.report;
 
-import bookStore.repository.BookRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ReportFactory {
-    public static ReportGenerator getReportType(String reportType) {
+    public static ReportGenerator getReport(String reportType) {
         if (reportType.equals("\"CSV\"")) {
             return new CSVReport();
         }

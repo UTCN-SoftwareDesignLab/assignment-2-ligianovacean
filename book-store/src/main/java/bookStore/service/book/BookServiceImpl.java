@@ -1,15 +1,16 @@
-package bookStore.service;
+package bookStore.service.book;
 
-import bookStore.service.report.CSVReport;
+import bookStore.service.author.AuthorService;
 import bookStore.dto.BookDto;
 import bookStore.entity.Author;
 import bookStore.entity.Book;
 import bookStore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,12 +24,40 @@ public class BookServiceImpl implements BookService {
     public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, @Value("${bookService.maxBooks}") Integer maxBooks) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
-        System.out.println(maxBooks);
+    }
+
+    @Override
+    public Book findById(Integer id){
+        return bookRepository.findOne(id);
     }
 
     @Override
     public List<Book> getAll() {
         return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Book> getByTitle(String title) {
+        List<Book> books = bookRepository.findByTitle(title);
+        if (books.size() == 0) {
+            throw new EntityNotFoundException("No books were found!");
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getByAuthor(String authorName){
+        List<Author> authors = authorService.findByName(authorName);
+        List<Book> books = new ArrayList<>();
+        for (Author author : authors) {
+            books.addAll(bookRepository.findByAuthorId(author.getId()));
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getByGenre(String genre) {
+        return bookRepository.findByGenre(genre);
     }
 
     @Override
@@ -39,24 +68,17 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void delete(String title, Integer authorId) {
-        List<Book> books = bookRepository.findByTitle(title);
-        List<Book> toDeleteBooks = new ArrayList<>();
-        for (Book book : books) {
-            if (book.getAuthor().getId() == authorId){
-                toDeleteBooks.add(book);
-            }
-        }
-        bookRepository.deleteInBatch(toDeleteBooks);
+    public void delete(Integer id) {
+        bookRepository.delete(id);
     }
 
     @Override
-    public void update(BookDto book) {
+    public Book update(BookDto book) {
         Book bookToUpdate = bookRepository.findByTitleAndAuthorId(book.title, book.authorId);
         bookToUpdate.setGenre(book.genre);
         bookToUpdate.setPrice(book.price);
         bookToUpdate.setQuantity(book.quantity);
-        bookRepository.save(bookToUpdate);
+        return bookRepository.save(bookToUpdate);
     }
 
     @Override

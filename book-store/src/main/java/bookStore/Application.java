@@ -1,10 +1,8 @@
 package bookStore;
 
 import bookStore.repository.AuthorRepository;
-import bookStore.service.AuthorService;
-import bookStore.service.AuthorServiceImpl;
-import bookStore.service.CachingAuthorService;
-import org.springframework.beans.factory.annotation.Value;
+import bookStore.service.author.AuthorService;
+import bookStore.service.author.AuthorServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,8 +21,9 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+/*
     @Bean(name = "AuthorService")
     public AuthorService authorService(AuthorRepository repository) {
-        return new CachingAuthorService(new AuthorServiceImpl(repository));
-    }
+        return new AuthorServiceImpl(repository);
+    }*/
 }

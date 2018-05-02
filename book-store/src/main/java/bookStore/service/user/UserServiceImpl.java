@@ -1,4 +1,4 @@
-package bookStore.service;
+package bookStore.service.user;
 
 import bookStore.dto.UserDTO;
 import bookStore.entity.User;
@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.security.MessageDigest;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -42,14 +42,26 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(String username) {
         User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new EntityNotFoundException("User could not be found!");
+        }
+        userRolesRepository.delete(userRolesRepository.findByUsername(username));
         userRepository.delete(user);
     }
 
     @Override
-    public void update(UserDTO user) {
+    public User update(UserDTO user){
         User userToUpdate = userRepository.findByUsername(user.username);
+        if (userToUpdate == null) {
+            throw new EntityNotFoundException("User could not be found!");
+        }
         userToUpdate.setPassword(new ShaPasswordEncoder().encodePassword(user.password, null));
-        userRepository.save(userToUpdate);
+        return userRepository.save(userToUpdate);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
 }

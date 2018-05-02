@@ -5,21 +5,19 @@ import java.io.IOException;
 import java.util.List;
 
 import bookStore.entity.Book;
-import bookStore.repository.BookRepository;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class PDFReport implements ReportGenerator{
-    public void generateReport(List<Book> booksOutOfStock) {
+    public void generateReport(List<Book> booksOutOfStock) throws IOException{
         writePdfFile((new File("src/report.pdf")).getAbsolutePath(), booksOutOfStock);
     }
 
 
-    private void writePdfFile(String filePath, List<Book> books) {
-        try {
+    private void writePdfFile(String filePath, List<Book> books) throws IOException{
             PDDocument document = new PDDocument();
             PDPage blankPage = new PDPage();
             document.addPage(blankPage);
@@ -37,7 +35,7 @@ public class PDFReport implements ReportGenerator{
             contentStream.setLeading(14.5f);
 
             //Setting the position for the line
-            contentStream.newLineAtOffset(5, 500);
+            contentStream.newLineAtOffset(5, 750);
 
             for (Book book : books) {
                 contentStream.showText(book.toString());
@@ -55,9 +53,7 @@ public class PDFReport implements ReportGenerator{
 
             //Closing the document
             document.close();
-        } catch (IOException exc) {
-            exc.printStackTrace();
-        }
+
     }
 
 }

@@ -1,43 +1,45 @@
 package bookStore;
 
-import bookStore.dto.UserDTO;
-import bookStore.entity.User;
-import bookStore.service.UserService;
+import bookStore.dto.SaleDTO;
+import bookStore.entity.Book;
+import bookStore.error.InvalidSaleException;
+import bookStore.service.book.BookService;
+import bookStore.service.book.SaleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @RestController
 public class UserAPIController {
-
     @Autowired
-    UserService userService;
+    BookService bookService;
+    @Autowired
+    SaleService saleService;
 
-    @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public List<User> getAll() {
-        return userService.getAll();
+    @RequestMapping(value = "/sellBook", method = RequestMethod.POST)
+    public ResponseEntity<Integer> sellBook(@RequestBody SaleDTO sale) throws InvalidSaleException{
+        Integer total = saleService.sell(sale);
+        return new ResponseEntity<>(total, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/createUsers", method = RequestMethod.POST)
-    public String create(@RequestBody @Valid UserDTO user) {
-        userService.create(user);
-        return "redirect:createUsers?success";
+    @RequestMapping(value = "/searchByTitle", method = RequestMethod.GET)
+    public ResponseEntity<List<Book>> searchByTitle(String title) throws EntityNotFoundException {
+        List<Book> books = bookService.getByTitle(title);
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/deleteUsers", method = RequestMethod.POST)
-    public String delete(@RequestBody String username) {
-        userService.delete(username.split("=")[1]);
-        return "redirect:deleteUsers?success";
+    @RequestMapping(value = "/searchByAuthor", method = RequestMethod.GET)
+    public List<Book> searchByAuthor(String auth) {
+        return bookService.getByAuthor(auth);
     }
 
-    @RequestMapping(value = "/updateUsers", method = RequestMethod.POST)
-    public String update(@RequestBody @Valid UserDTO user) {
-        userService.update(user);
-        return "redirect:updateUsers?success";
+    @RequestMapping(value = "/searchByGenre", method = RequestMethod.GET)
+    public List<Book> searchByGenre(String genre) {
+        return bookService.getByGenre(genre);
     }
+
 }

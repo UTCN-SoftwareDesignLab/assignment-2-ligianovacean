@@ -25,10 +25,11 @@ function addUser(user) {
         type: 'POST',
         data: JSON.stringify(user),
         dataType: 'json',
-        success: function() {
+        success: function(result) {
+            $('#error').val(result.message);
             refreshUsers();
             $('#username, #password').val('');
-        }
+        },
     });
 }
 
@@ -40,8 +41,9 @@ function deleteUser(username) {
             },
             type: 'POST',
             data: username,
-
-            success: function() {
+            dataType: 'json',
+            success: function(result) {
+                $('#error').val(result.message);
                 refreshUsers();
                 $('#deleteUsername').val('');
             }
@@ -58,9 +60,10 @@ function updateUser(user) {
             type: 'POST',
             data: JSON.stringify(user),
             dataType: 'json',
-            success: function() {
+            success: function(result) {
+                $('#error').val(result.message);
                 refreshUsers();
-                $('#updateUsername').val('');
+                $('#updateUsername, #updatePassword').val('');
             }
      });
 }
